@@ -39,7 +39,7 @@ public class MoviesEJBTest {
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
                 .addClasses(Movie.class, MoviesBean.class, MoviesEJBTest.class)
-                .addAsResource(new ClassLoaderAsset("META-INF/persistence.xml"), "META-INF/persistence.xml");
+                .addAsResource(new ClassLoaderAsset("META-INF/test-persistence.xml"), "META-INF/persistence.xml");
     }
 
     @EJB

@@ -54,6 +54,7 @@ public class MoviesHtmlUnitTest {
         p.setProperty(EJBContainer.PROVIDER, "tomee-embedded"); // need web feature
         p.setProperty(EJBContainer.MODULES, webApp.getAbsolutePath());
         p.setProperty(EmbeddedTomEEContainer.TOMEE_EJBCONTAINER_HTTP_PORT, String.valueOf(port));
+        p.setProperty("openjpa.jdbc.DBDictionary", "hsql");
         container = EJBContainer.createEJBContainer(p);
     }
 

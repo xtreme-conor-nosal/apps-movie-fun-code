@@ -24,7 +24,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.ejb.embeddable.EJBContainer;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MoviesEmbeddedEJBTest {
 
@@ -32,7 +34,10 @@ public class MoviesEmbeddedEJBTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        ejbContainer = EJBContainer.createEJBContainer();
+        Map<String, String> props = new HashMap<>();
+        props.put("openjpa.jdbc.DBDictionary", "hsql");
+
+        ejbContainer = EJBContainer.createEJBContainer(props);
     }
 
     @AfterClass

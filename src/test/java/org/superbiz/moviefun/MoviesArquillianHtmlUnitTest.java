@@ -49,11 +49,11 @@ public class MoviesArquillianHtmlUnitTest {
     @Deployment
     public static WebArchive createDeployment() {
 
-        Collection<String> dependencies = Arrays.asList(new String[]{
-                "javax.servlet:jstl",
-                "taglibs:standard",
-                "commons-lang:commons-lang"
-        });
+        Collection<String> dependencies = Arrays.asList(
+            "javax.servlet:jstl",
+            "taglibs:standard",
+            "commons-lang:commons-lang"
+        );
 
         File[] libs = Maven.resolver()
                 .loadPomFromFile(Basedir.basedir("pom.xml")).resolve(dependencies)
@@ -61,7 +61,7 @@ public class MoviesArquillianHtmlUnitTest {
 
         WebArchive war = ShrinkWrap.create(WebArchive.class, "test.war")
                 .addClasses(Movie.class, MoviesBean.class, MoviesArquillianHtmlUnitTest.class, ActionServlet.class)
-                .addAsResource(new ClassLoaderAsset("META-INF/persistence.xml"), "META-INF/persistence.xml")
+                .addAsResource(new ClassLoaderAsset("META-INF/test-persistence.xml"), "META-INF/persistence.xml")
                 .addAsLibraries(libs);
 
         war.merge(ShrinkWrap.create(GenericArchive.class).as(ExplodedImporter.class)

@@ -24,7 +24,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.ejb.embeddable.EJBContainer;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MoviesTest {
 
@@ -32,7 +34,10 @@ public class MoviesTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        ejbContainer = EJBContainer.createEJBContainer();
+        Map<String, String> props = new HashMap<>();
+        props.put("openjpa.jdbc.DBDictionary", "hsql");
+
+        ejbContainer = EJBContainer.createEJBContainer(props);
     }
 
     @AfterClass
@@ -71,5 +76,4 @@ public class MoviesTest {
         Assert.assertEquals("Bad Boys", moviesFound.get(0).getTitle());
         Assert.assertEquals(1995, moviesFound.get(0).getYear());
     }
-
 }
