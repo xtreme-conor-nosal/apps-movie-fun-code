@@ -1,0 +1,15 @@
+spring:
+
+  mvc.view:
+    prefix: /WEB-INF/
+    suffix: .jsp
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/movie_fun_test?useSSL=false
+    username: root
+
+  jpa:
+    generate-ddl: true
+    show-sql: false
+    hibernate.naming.strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
