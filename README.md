@@ -4,9 +4,7 @@
 
 ```
 $ mvn install
-$ cf push moviefun \
-    -p target/moviefun.war \
-    -b https://github.com/cloudfoundry-community/tomee-buildpack.git\#v3.10
+$ cf push moviefun -p target/moviefun.war
 ```
 
 ## Re-platforming steps

@@ -77,6 +77,23 @@
         </c:forEach>
     </table>
 
+    <h2>Seeded Database with the Following albums</h2>
+    <table width="500">
+        <tr>
+            <td><b>Title</b></td>
+            <td><b>Artist</b></td>
+            <td><b>Year</b></td>
+        </tr>
+
+        <c:forEach items="${requestScope.albums}" var="album">
+            <tr>
+                <td> ${album.title} </td>
+                <td> ${album.artist} </td>
+                <td> ${album.year} </td>
+            </tr>
+        </c:forEach>
+    </table>
+
     <h2>Continue</h2>
     <a href="moviefun">Go to main app</a>
 </div>

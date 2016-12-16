@@ -4,12 +4,18 @@ spring:
     prefix: /WEB-INF/
     suffix: .jsp
 
-  datasource:
-    url: jdbc:mysql://localhost:3306/movie_fun?useSSL=false
-    username: root
-
   jpa:
     generate-ddl: true
     show-sql: false
     hibernate.naming.strategy: org.hibernate.cfg.ImprovedNamingStrategy
     properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+
+pal:
+  moviesDb:
+    url: jdbc:mysql://localhost:3306/movie_fun?useSSL=false
+    username: root
+    password:
+  albumsDb:
+    url: jdbc:mysql://localhost:3306/albums?useSSL=false
+    username: root
+    password:
