@@ -7,11 +7,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
+
+import static org.superbiz.moviefun.DbConfig.createConnectionPool;
 
 @Configuration
 public class MoviesDbConfig {
@@ -27,16 +28,7 @@ public class MoviesDbConfig {
         dataSource.setURL(moviesDbUrl);
         dataSource.setUser(moviesDbUsername);
         dataSource.setPassword(moviesDbPassword);
-        return dataSource;
-    }
-
-    @Bean
-    HibernateJpaVendorAdapter jpaVendorAdapter() {
-        HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
-        jpaVendorAdapter.setDatabase(Database.MYSQL);
-        jpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.MySQL5InnoDBDialect");
-        jpaVendorAdapter.setGenerateDdl(true);
-        return jpaVendorAdapter;
+        return createConnectionPool(dataSource);
     }
 
     @Bean

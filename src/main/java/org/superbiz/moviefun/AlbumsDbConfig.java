@@ -12,6 +12,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
+import static org.superbiz.moviefun.DbConfig.createConnectionPool;
+
 @Configuration
 public class AlbumsDbConfig {
 
@@ -26,7 +28,7 @@ public class AlbumsDbConfig {
         dataSource.setURL(albumsDbUrl);
         dataSource.setUser(albumsDbUsername);
         dataSource.setPassword(albumsDbPassword);
-        return dataSource;
+        return createConnectionPool(dataSource);
     }
 
     @Bean
