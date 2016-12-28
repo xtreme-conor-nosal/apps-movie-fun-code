@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.superbiz.moviefun;
+package org.superbiz.moviefun.movies;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,25 +22,35 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 @Entity
-public class Album implements Serializable {
+public class Movie implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue
     private Long id;
 
-    private String artist;
+    private String director;
     private String title;
     private int year;
+    private String genre;
     private int rating;
 
-    public Album() {
+    public Movie() {
     }
 
-    public Album(String artist, String title, int year, int rating) {
-        this.artist = artist;
+    public Movie(String title, String director, String genre, int rating, int year) {
+        this.director = director;
         this.title = title;
         this.year = year;
+        this.genre = genre;
         this.rating = rating;
+    }
+
+    public Movie(String director, String title, int year) {
+        this.director = director;
+        this.title = title;
+        this.year = year;
     }
 
     public long getId() {
@@ -51,12 +61,12 @@ public class Album implements Serializable {
         this.id = id;
     }
 
-    public String getArtist() {
-        return artist;
+    public String getDirector() {
+        return director;
     }
 
-    public void setArtist(String artist) {
-        this.artist = artist;
+    public void setDirector(String director) {
+        this.director = director;
     }
 
     public String getTitle() {
@@ -73,6 +83,14 @@ public class Album implements Serializable {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
     public int getRating() {

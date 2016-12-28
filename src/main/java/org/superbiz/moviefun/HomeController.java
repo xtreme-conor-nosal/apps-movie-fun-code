@@ -4,6 +4,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.superbiz.moviefun.albums.Album;
+import org.superbiz.moviefun.albums.AlbumFixtures;
+import org.superbiz.moviefun.albums.AlbumsBean;
+import org.superbiz.moviefun.movies.Movie;
+import org.superbiz.moviefun.movies.MovieFixtures;
+import org.superbiz.moviefun.movies.MoviesBean;
 
 import java.util.List;
 import java.util.Map;
@@ -15,17 +21,23 @@ public class HomeController {
     private final AlbumsBean albumsBean;
     private final PlatformTransactionManager moviesTransactionManager;
     private final PlatformTransactionManager albumsTransactionManager;
+    private final MovieFixtures movieFixtures;
+    private final AlbumFixtures albumFixtures;
 
     public HomeController(
         MoviesBean moviesBean,
         AlbumsBean albumsBean,
         PlatformTransactionManager moviesTransactionManager,
-        PlatformTransactionManager albumsTransactionManager
+        PlatformTransactionManager albumsTransactionManager,
+        MovieFixtures movieFixtures,
+        AlbumFixtures albumFixtures
     ) {
         this.moviesBean = moviesBean;
         this.albumsBean = albumsBean;
         this.moviesTransactionManager = moviesTransactionManager;
         this.albumsTransactionManager = albumsTransactionManager;
+        this.movieFixtures = movieFixtures;
+        this.albumFixtures = albumFixtures;
     }
 
 
@@ -45,9 +57,9 @@ public class HomeController {
     private List<Album> createAlbums() {
         TransactionStatus transaction = albumsTransactionManager.getTransaction(null);
 
-        albumsBean.addAlbum(new Album("Massive Attack", "Mezzanine", 1998, 9));
-        albumsBean.addAlbum(new Album("Radiohead", "OK Computer", 1997, 8));
-        albumsBean.addAlbum(new Album("Radiohead", "Kid A", 2000, 9));
+        for (Album album : albumFixtures.load()) {
+            albumsBean.addAlbum(album);
+        }
 
         albumsTransactionManager.commit(transaction);
 
@@ -57,13 +69,9 @@ public class HomeController {
     private List<Movie> createMovies() {
         TransactionStatus transaction = moviesTransactionManager.getTransaction(null);
 
-        moviesBean.addMovie(new Movie("Wedding Crashers", "David Dobkin", "Comedy", 7, 2005));
-        moviesBean.addMovie(new Movie("Starsky & Hutch", "Todd Phillips", "Action", 6, 2004));
-        moviesBean.addMovie(new Movie("Shanghai Knights", "David Dobkin", "Action", 6, 2003));
-        moviesBean.addMovie(new Movie("I-Spy", "Betty Thomas", "Adventure", 5, 2002));
-        moviesBean.addMovie(new Movie("The Royal Tenenbaums", "Wes Anderson", "Comedy", 8, 2001));
-        moviesBean.addMovie(new Movie("Zoolander", "Ben Stiller", "Comedy", 6, 2001));
-        moviesBean.addMovie(new Movie("Shanghai Noon", "Tom Dey", "Comedy", 7, 2000));
+        for (Movie movie : movieFixtures.load()) {
+            moviesBean.addMovie(movie);
+        }
 
         moviesTransactionManager.commit(transaction);
 

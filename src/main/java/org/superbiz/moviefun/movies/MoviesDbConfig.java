@@ -1,4 +1,4 @@
-package org.superbiz.moviefun;
+package org.superbiz.moviefun.movies;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
