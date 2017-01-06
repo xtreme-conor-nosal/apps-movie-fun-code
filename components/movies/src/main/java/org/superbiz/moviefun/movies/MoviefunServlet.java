@@ -36,10 +36,10 @@ public class MoviefunServlet extends HttpServlet {
 
     public static int PAGE_SIZE = 5;
 
-    private MoviesBean moviesBean;
+    private MoviesRepository moviesRepository;
 
-    public MoviefunServlet(MoviesBean moviesBean) {
-        this.moviesBean = moviesBean;
+    public MoviefunServlet(MoviesRepository moviesRepository) {
+        this.moviesRepository = moviesRepository;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class MoviefunServlet extends HttpServlet {
 
             Movie movie = new Movie(title, director, genre, rating, year);
 
-            moviesBean.addMovie(movie);
+            moviesRepository.addMovie(movie);
             response.sendRedirect("moviefun");
             return;
 
@@ -73,7 +73,7 @@ public class MoviefunServlet extends HttpServlet {
 
             String[] ids = request.getParameterValues("id");
             for (String id : ids) {
-                moviesBean.deleteMovieId(new Long(id));
+                moviesRepository.deleteMovieId(new Long(id));
             }
 
             response.sendRedirect("moviefun");
@@ -86,11 +86,11 @@ public class MoviefunServlet extends HttpServlet {
             int count = 0;
 
             if (StringUtils.isEmpty(key) || StringUtils.isEmpty(field)) {
-                count = moviesBean.countAll();
+                count = moviesRepository.countAll();
                 key = "";
                 field = "";
             } else {
-                count = moviesBean.count(field, key);
+                count = moviesRepository.count(field, key);
             }
 
             int page = 1;
@@ -117,9 +117,9 @@ public class MoviefunServlet extends HttpServlet {
             List<Movie> range;
 
             if (StringUtils.isEmpty(key) || StringUtils.isEmpty(field)) {
-                range = moviesBean.findAll(start, PAGE_SIZE);
+                range = moviesRepository.findAll(start, PAGE_SIZE);
             } else {
-                range = moviesBean.findRange(field, key, start, PAGE_SIZE);
+                range = moviesRepository.findRange(field, key, start, PAGE_SIZE);
             }
 
             int end = start + range.size();
