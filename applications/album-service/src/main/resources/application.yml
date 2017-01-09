@@ -6,7 +6,7 @@ spring:
     properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
 
   datasource:
-    url: jdbc:mysql://localhost:3306/movies?useSSL=false
+    url: jdbc:mysql://localhost:3306/albums?useSSL=false
     username: root
 
 logging.level:

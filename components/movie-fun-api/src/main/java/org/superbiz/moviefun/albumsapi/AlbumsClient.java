@@ -18,7 +18,7 @@ public class AlbumsClient {
     }
 
     public void addAlbum(AlbumInfo album) {
-        restOperations.postForEntity(albumsUrl, album, AlbumInfo.class).getBody();
+        restOperations.postForEntity(albumsUrl, album, AlbumInfo.class);
     }
 
     public AlbumInfo find(long id) {
@@ -26,7 +26,8 @@ public class AlbumsClient {
     }
 
     public List<AlbumInfo> getAlbums() {
-        ParameterizedTypeReference<List<AlbumInfo>> albumListType = new ParameterizedTypeReference<List<AlbumInfo>>() {};
+        ParameterizedTypeReference<List<AlbumInfo>> albumListType = new ParameterizedTypeReference<List<AlbumInfo>>() {
+        };
 
         return restOperations.exchange(albumsUrl, GET, null, albumListType).getBody();
     }

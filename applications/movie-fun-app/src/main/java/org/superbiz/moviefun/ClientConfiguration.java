@@ -6,11 +6,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 import org.superbiz.moviefun.albumsapi.AlbumsClient;
+import org.superbiz.moviefun.moviesapi.MoviesClient;
 
 @Configuration
 public class ClientConfiguration {
 
     @Value("${albums.url}") String albumsUrl;
+    @Value("${movies.url}") String moviesUrl;
 
     @Bean
     public RestOperations restOperations() {
@@ -20,5 +22,10 @@ public class ClientConfiguration {
     @Bean
     public AlbumsClient albumsClient(RestOperations restOperations) {
         return new AlbumsClient(albumsUrl, restOperations);
+    }
+
+    @Bean
+    public MoviesClient moviesClient(RestOperations restOperations) {
+        return new MoviesClient(moviesUrl, restOperations);
     }
 }
