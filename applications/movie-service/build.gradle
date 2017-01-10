@@ -9,8 +9,8 @@ description = "OpenEJB :: Web Examples :: MovieService"
 dependencies {
     compile project(":components:movies")
 
-    compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
-    compile "org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion"
+    compile "org.springframework.boot:spring-boot-starter-web"
+    compile "org.springframework.boot:spring-boot-starter-data-jpa"
 
     compile "mysql:mysql-connector-java:$mysqlVersion"
 }

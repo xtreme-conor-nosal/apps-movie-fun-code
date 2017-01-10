@@ -1,6 +1,8 @@
 ---
 memory: 1G
 instances: 1
+env:
+  TRUST_CERTS: api.cfapps-01.haas-66.pez.pivotal.io,basic-sso.login.run-01.haas-66.pez.pivotal.io
 applications:
 - name: album-service
   path: applications/album-service/build/libs/album-service-1.1.0-SNAPSHOT.jar
@@ -12,6 +14,8 @@ applications:
   - movie-database
 - name: movie-fun-app
   path: applications/movie-fun-app/build/libs/movie-fun-app-1.1.0-SNAPSHOT.war
+  services:
+  - movie-fun-sso
   env:
     ALBUMS_URL: http://album-service.cfapps-01.haas-66.pez.pivotal.io/albums
     MOVIES_URL: http://movie-service.cfapps-01.haas-66.pez.pivotal.io/movies
