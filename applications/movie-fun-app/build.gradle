@@ -22,7 +22,7 @@ dependencies {
     compile "org.springframework.cloud:spring-cloud-starter-oauth2"
 
     compile "io.pivotal.spring.cloud:spring-cloud-sso-connector:$springCloudSsoVersion"
-    compile "io.pivotal.spring.cloud:cloudfoundry-certificate-truster:1.0.1.RELEASE"
+    compile "io.pivotal.spring.cloud:cloudfoundry-certificate-truster:$certTrusterVersion"
 
     compile "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.7.0"
     compile "taglibs:standard:1.1.2"
