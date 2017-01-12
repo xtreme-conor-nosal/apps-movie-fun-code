@@ -5,6 +5,9 @@ dependencies {
 
     compile "org.springframework:spring-web:$springVersion"
 
+    compile "com.netflix.hystrix:hystrix-core:1.5.6g"
+    compile "com.netflix.hystrix:hystrix-javanica:1.5.6"
+
     compile "javax.servlet:javax.servlet-api:3.1.0"
     compile "org.slf4j:slf4j-api:$slf4jVersion"
 }

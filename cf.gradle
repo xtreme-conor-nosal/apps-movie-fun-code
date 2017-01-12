@@ -4,6 +4,7 @@ def services = [
     [type: "p-identity", plan: "basic-sso", instance: "movie-fun-sso"],
     [type: "p-service-registry", plan: "standard", instance: "movie-fun-registry"],
     [type: "p-config-server", plan: "standard", instance: "movie-fun-config", config: "config-server.json"],
+    [type: "p-circuit-breaker-dashboard", plan: "standard", instance: "movie-fun-circuit-breaker"],
 ]
 
 task teardownPcfEnv {
@@ -73,8 +74,25 @@ task deploy {
     }
 }
 
+task setEnvVars {
+    doLast {
+        [
+            "cf set-env movie-fun-app S3_ACCESSKEY $System.env.S3_ACCESSKEY",
+            "cf set-env movie-fun-app S3_SECRETKEY $System.env.S3_SECRETKEY",
+            "cf set-env movie-fun-app S3_BUCKETNAME $System.env.S3_BUCKETNAME",
+            "cf set-env album-service S3_ACCESSKEY $System.env.S3_ACCESSKEY",
+            "cf set-env album-service S3_SECRETKEY $System.env.S3_SECRETKEY",
+            "cf set-env album-service S3_BUCKETNAME $System.env.S3_BUCKETNAME",
+        ].each { println it.execute().text }
+
+        "cf restage movie-fun-app".execute().in.eachLine { println it }
+        "cf restage album-service".execute().in.eachLine { println it }
+    }
+}
+
 setupPcfEnv.mustRunAfter teardownPcfEnv
 checkCfServices.mustRunAfter setupPcfEnv
 deploy.mustRunAfter checkCfServices
+setEnvVars.mustRunAfter deploy
 
-task resetPcfEnv(dependsOn: [teardownPcfEnv, setupPcfEnv, checkCfServices, deploy])
+task resetPcfEnv(dependsOn: [teardownPcfEnv, setupPcfEnv, checkCfServices, deploy, setEnvVars])
