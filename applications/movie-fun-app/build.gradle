@@ -20,6 +20,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-web"
     compile "org.springframework.boot:spring-boot-starter-tomcat"
     compile "org.springframework.cloud:spring-cloud-starter-oauth2"
+    compile "org.springframework.security:spring-security-taglibs:$springSecurityVersion"
 
     compile "io.pivotal.spring.cloud:spring-cloud-sso-connector:$springCloudSsoVersion"
     compile "io.pivotal.spring.cloud:cloudfoundry-certificate-truster:$certTrusterVersion"
