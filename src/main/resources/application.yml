@@ -11,7 +11,11 @@ spring:
     prefix: /WEB-INF/
     suffix: .jsp
 
+  logging.level:
+      root: INFO
+      org.superbiz.moviefun: DEBUG
+
 s3:
-  accessKey: <access key id>
-  secretKey: <secret access key>
-  bucketName: <name of the bucket>
+  accessKey: AKIAIPTT54ODXAMNSEWQ
+  secretKey: 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
+  bucketName: my-replatforming-bucket
