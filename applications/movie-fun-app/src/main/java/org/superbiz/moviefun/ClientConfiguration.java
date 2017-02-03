@@ -15,6 +15,11 @@ public class ClientConfiguration {
     @Value("${movies.url}") String moviesUrl;
 
     @Bean
+    public RestOperations restOperations() {
+        return new org.springframework.web.client.RestTemplate();
+    }
+
+    @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
