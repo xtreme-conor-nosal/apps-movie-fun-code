@@ -1,7 +1,8 @@
-apply from: "../../java.gradle"
+apply from: "../../kotlin.gradle"
 
 dependencies {
     compile project(":components:blobstore")
+    compile project(":components:rest-support")
 
     compile "org.springframework:spring-web:$springVersion"
 
