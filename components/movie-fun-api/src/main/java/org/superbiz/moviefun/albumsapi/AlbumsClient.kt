@@ -3,7 +3,6 @@ package org.superbiz.moviefun.albumsapi
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpMethod.GET
 import org.springframework.web.client.RestOperations
-import org.superbiz.moviefun.restsupport.RestResult
 import org.superbiz.moviefun.restsupport.RestTemplate
 
 class AlbumsClient(
@@ -13,7 +12,7 @@ class AlbumsClient(
 ) {
 
     fun addAlbum(album: AlbumInfo) {
-        restOperations.postForEntity<AlbumInfo>(albumsUrl, album, AlbumInfo::class.java)
+        restTemplate.post(albumsUrl, album, AlbumInfo::class)
     }
 
     fun find(id: Long): AlbumInfo {
@@ -21,9 +20,9 @@ class AlbumsClient(
         val result = restTemplate.get(restUrl, AlbumInfo::class)
 
         when (result) {
-            is RestResult.Error ->
+            is RestTemplate.RestResult.Error ->
                 throw RuntimeException("Error while fetching.... ${result.error}")
-            is RestResult.Success ->
+            is RestTemplate.RestResult.Success ->
                 return result.value
         }
     }
