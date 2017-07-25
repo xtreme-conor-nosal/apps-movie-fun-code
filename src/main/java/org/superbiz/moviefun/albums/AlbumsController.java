@@ -7,14 +7,15 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.superbiz.moviefun.storage.Blob;
+import org.superbiz.moviefun.storage.BlobStore;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
+import java.util.Optional;
 
 import static java.lang.ClassLoader.getSystemResource;
 import static java.lang.String.format;
@@ -25,11 +26,12 @@ import static java.nio.file.Files.readAllBytes;
 public class AlbumsController {
 
     private final AlbumsBean albumsBean;
+    private final BlobStore blobStore;
 
-    public AlbumsController(AlbumsBean albumsBean) {
+    public AlbumsController(AlbumsBean albumsBean, BlobStore blobStore) {
         this.albumsBean = albumsBean;
+        this.blobStore = blobStore;
     }
-
 
     @GetMapping
     public String index(Map<String, Object> model) {
@@ -52,25 +54,18 @@ public class AlbumsController {
 
     @GetMapping("/{albumId}/cover")
     public HttpEntity<byte[]> getCover(@PathVariable long albumId) throws IOException, URISyntaxException {
-        Path coverFilePath = getExistingCoverPath(albumId);
-        byte[] imageBytes = readAllBytes(coverFilePath);
-        HttpHeaders headers = createImageHttpHeaders(coverFilePath, imageBytes);
+        String path = getCoverFile(albumId);
+        byte[] imageBytes = getExistingCoverPath(path);
+        HttpHeaders headers = createImageHttpHeaders(path, imageBytes);
 
         return new HttpEntity<>(imageBytes, headers);
     }
 
-
-    private void saveUploadToFile(@RequestParam("file") MultipartFile uploadedFile, File targetFile) throws IOException {
-        targetFile.delete();
-        targetFile.getParentFile().mkdirs();
-        targetFile.createNewFile();
-
-        try (FileOutputStream outputStream = new FileOutputStream(targetFile)) {
-            outputStream.write(uploadedFile.getBytes());
-        }
+    private void saveUploadToFile(@RequestParam("file") MultipartFile uploadedFile, String targetFile) throws IOException {
+        blobStore.put(new Blob(targetFile, uploadedFile.getInputStream(), uploadedFile.getContentType()));
     }
 
-    private HttpHeaders createImageHttpHeaders(Path coverFilePath, byte[] imageBytes) throws IOException {
+    private HttpHeaders createImageHttpHeaders(String coverFilePath, byte[] imageBytes) throws IOException {
         String contentType = new Tika().detect(coverFilePath);
 
         HttpHeaders headers = new HttpHeaders();
@@ -79,21 +74,23 @@ public class AlbumsController {
         return headers;
     }
 
-    private File getCoverFile(@PathVariable long albumId) {
-        String coverFileName = format("covers/%d", albumId);
-        return new File(coverFileName);
+    private String getCoverFile(@PathVariable long albumId) {
+        return format("covers/%d", albumId);
     }
 
-    private Path getExistingCoverPath(@PathVariable long albumId) throws URISyntaxException {
-        File coverFile = getCoverFile(albumId);
-        Path coverFilePath;
-
-        if (coverFile.exists()) {
-            coverFilePath = coverFile.toPath();
-        } else {
-            coverFilePath = Paths.get(getSystemResource("default-cover.jpg").toURI());
+    private byte[] getExistingCoverPath(String coverFile) throws URISyntaxException, IOException {
+        Optional<Blob> blob = blobStore.get(coverFile);
+        try (InputStream inputStream = blob.isPresent() ? blob.get().inputStream : getClass().getClassLoader().getResourceAsStream("default-cover.jpg")) {
+            byte[] buffer = new byte[1024];
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            int count;
+            do {
+                count = inputStream.read(buffer);
+                if (count > 0) {
+                    os.write(buffer, 0, count);
+                }
+            } while (count > 0);
+            return os.toByteArray();
         }
-
-        return coverFilePath;
     }
 }
