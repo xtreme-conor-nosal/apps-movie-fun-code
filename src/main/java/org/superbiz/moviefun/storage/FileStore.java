@@ -1,5 +1,7 @@
 package org.superbiz.moviefun.storage;
 
+import org.apache.tika.Tika;
+
 import java.io.*;
 import java.util.Optional;
 
@@ -30,7 +32,8 @@ public class FileStore implements BlobStore {
     public Optional<Blob> get(String name) throws IOException {
         File targetFile = new File(name);
         if (targetFile.exists()) {
-            return Optional.of(new Blob(name, new FileInputStream(targetFile), null));
+            String contentType = new Tika().detect(name);
+            return Optional.of(new Blob(name, new FileInputStream(targetFile), contentType));
         }
         return Optional.empty();
     }

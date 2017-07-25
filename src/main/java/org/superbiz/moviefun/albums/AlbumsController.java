@@ -55,31 +55,7 @@ public class AlbumsController {
     @GetMapping("/{albumId}/cover")
     public HttpEntity<byte[]> getCover(@PathVariable long albumId) throws IOException, URISyntaxException {
         String path = getCoverFile(albumId);
-        byte[] imageBytes = getExistingCoverPath(path);
-        HttpHeaders headers = createImageHttpHeaders(path, imageBytes);
-
-        return new HttpEntity<>(imageBytes, headers);
-    }
-
-    private void saveUploadToFile(@RequestParam("file") MultipartFile uploadedFile, String targetFile) throws IOException {
-        blobStore.put(new Blob(targetFile, uploadedFile.getInputStream(), uploadedFile.getContentType()));
-    }
-
-    private HttpHeaders createImageHttpHeaders(String coverFilePath, byte[] imageBytes) throws IOException {
-        String contentType = new Tika().detect(coverFilePath);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType(contentType));
-        headers.setContentLength(imageBytes.length);
-        return headers;
-    }
-
-    private String getCoverFile(@PathVariable long albumId) {
-        return format("covers/%d", albumId);
-    }
-
-    private byte[] getExistingCoverPath(String coverFile) throws URISyntaxException, IOException {
-        Optional<Blob> blob = blobStore.get(coverFile);
+        Optional<Blob> blob = blobStore.get(path);
         try (InputStream inputStream = blob.isPresent() ? blob.get().inputStream : getClass().getClassLoader().getResourceAsStream("default-cover.jpg")) {
             byte[] buffer = new byte[1024];
             ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -90,7 +66,27 @@ public class AlbumsController {
                     os.write(buffer, 0, count);
                 }
             } while (count > 0);
-            return os.toByteArray();
+            byte[] imageBytes = os.toByteArray();
+            String contentType = blob.isPresent() ? blob.get().contentType : "image/jpg";
+            HttpHeaders headers = createImageHttpHeaders(contentType, imageBytes);
+
+            return new HttpEntity<>(imageBytes, headers);
         }
+
+    }
+
+    private void saveUploadToFile(@RequestParam("file") MultipartFile uploadedFile, String targetFile) throws IOException {
+        blobStore.put(new Blob(targetFile, uploadedFile.getInputStream(), uploadedFile.getContentType()));
+    }
+
+    private HttpHeaders createImageHttpHeaders(String contentType, byte[] imageBytes) throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType(contentType));
+        headers.setContentLength(imageBytes.length);
+        return headers;
+    }
+
+    private String getCoverFile(@PathVariable long albumId) {
+        return format("covers/%d", albumId);
     }
 }
