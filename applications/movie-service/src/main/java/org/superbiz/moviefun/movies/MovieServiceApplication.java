@@ -7,9 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Created by pivotal on 7/27/17.
  */
 @SpringBootApplication
-public class MovieApplication {
+public class MovieServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MovieApplication.class, args);
+        SpringApplication.run(MovieServiceApplication.class, args);
     }
 }
