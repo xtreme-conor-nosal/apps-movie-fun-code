@@ -1,0 +1,16 @@
+apply from: "../../java.gradle"
+
+dependencies {
+    compile "org.springframework:spring-core:$springVersion"
+    compile "org.springframework:spring-context:$springVersion"
+    compile "org.springframework:spring-tx:$springVersion"
+    compile "org.springframework:spring-web:$springVersion"
+
+    compile "org.hibernate:hibernate-core:$hibernateVersion"
+    compile "javax.servlet:javax.servlet-api:3.1.0"
+    compile "org.slf4j:slf4j-api:$slf4jVersion"
+
+    compile "javax.servlet:jstl:1.2"
+    compile "org.apache.tomee:javaee-api:7.0"
+    compile "commons-lang:commons-lang:2.4"
+}
