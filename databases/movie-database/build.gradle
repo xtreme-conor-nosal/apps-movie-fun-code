@@ -16,6 +16,7 @@ flyway {
     url = "jdbc:mysql://localhost:3306/movies?useSSL=false"
     user = "root"
     outOfOrder = false
+    baselineOnMigrate = true
 }
 
 def tunnelProcess

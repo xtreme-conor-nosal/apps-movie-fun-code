@@ -29,7 +29,7 @@ dependencies {
     compile "io.pivotal.spring.cloud:spring-cloud-services-starter-config-client"
 
     compile "io.pivotal.spring.cloud:cloudfoundry-certificate-truster:$certTrusterVersion"
-
+    compile "io.pivotal.spring.cloud:spring-cloud-services-starter-circuit-breaker"
     compile "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.7.0"
     compile "taglibs:standard:1.1.2"
     compile "javax.servlet:jstl:1.2"
