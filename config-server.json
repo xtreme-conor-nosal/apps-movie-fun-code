@@ -1,0 +1,6 @@
+{
+  "git": {
+    "uri": "ssh://git@github.com/pivotal-education/movie-fun-config.git",
+    "privateKey": "${CONFIG_SERVER_KEY}"
+  }
+}
