@@ -3,6 +3,7 @@ buildscript {
         springBootVersion = "1.4.2.RELEASE"
         springVersion = "4.3.4.RELEASE"
         springCloudVersion = "Camden.SR3"
+        springCloudServicesVersion = "1.3.1.RELEASE"
         springCloudSsoVersion = "1.1.0.RELEASE"
         springSecurityVersion = "4.1.3.RELEASE"
 
@@ -74,22 +75,24 @@ task deploy {
 task setupPcfEnv {
     doLast {
         [
-            "cf create-service p-mysql 100mb movie-database",
-            "cf create-service p-mysql 100mb album-database",
-            "cf create-service p-identity basic-sso movie-fun-sso",
+                "cf create-service p-mysql 100mb movie-database",
+                "cf create-service p-mysql 100mb album-database",
+                "cf create-service p-identity basic-sso movie-fun-sso",
+                "cf create-service p-service-registry standard movie-fun-registry",
+        ].each { println it.execute().text }
+    }
+}
+task teardownPcfEnv {
+    doLast {
+        [
+                "cf delete -f album-service",
+                "cf delete -f movie-service",
+                "cf delete -f movie-fun-app",
+                "cf delete-service -f movie-fun-registry",
+                "cf delete-service -f movie-database",
+                "cf delete-service -f album-database",
+                "cf delete-service -f movie-fun-sso",
         ].each { println it.execute().text }
     }
 }
 
-task teardownPcfEnv {
-    doLast {
-        [
-            "cf delete -f album-service",
-            "cf delete -f movie-service",
-            "cf delete -f movie-fun-app",
-            "cf delete-service -f movie-database",
-            "cf delete-service -f album-database",
-            "cf delete-service -f movie-fun-sso",
-        ].each { println it.execute().text }
-    }
-}
